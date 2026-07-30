@@ -20,9 +20,24 @@ jobs:
           git config --global user.email "dragwyb@gmail.com"
           git config --global user.name "Dragwyb"
 
-      - name: Push to Secondary Account
+      - name: Preserve Target Workflows and Push
         env:
           SEC_TOKEN: ${{ secrets.SECONDARY_REPO_TOKEN }}
         run: |
-          # Push directly to the target URL using the token
-          git push --force "https://${SEC_TOKEN}@github.com/Dragwyb/workflow-automate.git" main
+          # 1. Clone the target repo into a temporary folder outside the workspace
+          git clone --depth 1 "https://${SEC_TOKEN}@github.com/Dragwyb/workflow-automate.git" /tmp/target-repo
+
+          # 2. Remove the source repository's .github folder from Git tracking
+          git rm -rf .github || true
+
+          # 3. Copy the target repository's .github folder into the local workspace
+          cp -r /tmp/target-repo/.github .github
+
+          # 4. Add the imported .github folder to Git
+          git add .github
+
+          # 5. Commit the swapped folder locally on the runner
+          git commit -m "chore: preserve target repository workflows" || true
+
+          # 6. Force push the combined result to the target repository
+          git push --force "https://${SEC_TOKEN}@github.com/Dragwyb/workflow-automate.git" HEAD:main
