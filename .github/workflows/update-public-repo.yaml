@@ -24,7 +24,7 @@ jobs:
           SEC_TOKEN: ${{ secrets.SECONDARY_REPO_TOKEN }}
         run: |
           # Replace SECONDARY_USER and REPO_SLUG with your actual details
-          REMOTE_URL="https://x-access-token:${SEC_TOKEN}@github.com/SECONDARY_USER/REPO_SLUG.git"
+          REMOTE_URL="https://x-access-token:${SEC_TOKEN}@github.com/Dragwyb/workflow-automate.git"
 
           # Add the secondary remote repository
           git remote add secondary "$REMOTE_URL"
