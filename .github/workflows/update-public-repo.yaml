@@ -3,7 +3,7 @@ name: Mirror Main Branch
 on:
   push:
     branches:
-      - main # Triggered by direct pushes AND merged Pull Requests
+      - main
 
 jobs:
   sync-to-secondary:
