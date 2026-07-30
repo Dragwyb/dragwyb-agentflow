@@ -12,7 +12,8 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Essential to maintain git history across accounts
+          fetch-depth: 0
+          persist-credentials: false
 
       - name: Configure Git Identity
         run: |
@@ -23,11 +24,5 @@ jobs:
         env:
           SEC_TOKEN: ${{ secrets.SECONDARY_REPO_TOKEN }}
         run: |
-          # Replace SECONDARY_USER and REPO_SLUG with your actual details
-          REMOTE_URL="https://x-access-token:${SEC_TOKEN}@github.com/Dragwyb/workflow-automate/"
-
-          # Add the secondary remote repository
-          git remote add secondary "$REMOTE_URL"
-
-          # Force push to ensure the secondary repo stays a perfect mirror
-          git push --force secondary main
+          # Push directly to the target URL using the token
+          git push --force "https://${SEC_TOKEN}@github.com/Dragwyb/workflow-automate.git" main
