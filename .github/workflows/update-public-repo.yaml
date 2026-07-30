@@ -1,0 +1,33 @@
+name: Mirror Main Branch
+
+on:
+  push:
+    branches:
+      - main # Triggered by direct pushes AND merged Pull Requests
+
+jobs:
+  sync-to-secondary:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Essential to maintain git history across accounts
+
+      - name: Configure Git Identity
+        run: |
+          git config --global user.email "dragwyb@gmail.com"
+          git config --global user.name "Dragwyb"
+
+      - name: Push to Secondary Account
+        env:
+          SEC_TOKEN: ${{ secrets.SECONDARY_REPO_TOKEN }}
+        run: |
+          # Replace SECONDARY_USER and REPO_SLUG with your actual details
+          REMOTE_URL="https://x-access-token:${SEC_TOKEN}@github.com/SECONDARY_USER/REPO_SLUG.git"
+
+          # Add the secondary remote repository
+          git remote add secondary "$REMOTE_URL"
+
+          # Force push to ensure the secondary repo stays a perfect mirror
+          git push --force secondary main
