@@ -25,7 +25,7 @@ jobs:
           SEC_TOKEN: ${{ secrets.SECONDARY_REPO_TOKEN }}
         run: |
           # 1. Clone the target repo into a temporary folder outside the workspace
-          git clone --depth 1 "https://${SEC_TOKEN}@github.com/Dragwyb/workflow-automate.git" /tmp/target-repo
+          git clone --depth 1 "https://${SEC_TOKEN}@github.com/Dragwyb/ai-agent-workflow-automation.git" /tmp/target-repo
 
           # 2. Remove the source repository's .github folder from Git tracking
           git rm -rf .github || true
@@ -40,4 +40,4 @@ jobs:
           git commit -m "chore: preserve target repository workflows" || true
 
           # 6. Force push the combined result to the target repository
-          git push --force "https://${SEC_TOKEN}@github.com/Dragwyb/workflow-automate.git" HEAD:main
+          git push --force "https://${SEC_TOKEN}@github.com/Dragwyb/ai-agent-workflow-automation.git" HEAD:main
